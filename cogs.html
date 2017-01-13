@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cogs</title>
+    <style>
+        img {
+            display : none;
+        }
+    
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+</body>
+
+   
+ 
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script>
+     
+    function rotate(element, speed, direction, degrees) {
+        
+        var $element = $("#" + element);
+        var looper;
+        
+        $element.css("transform", "rotate(" + degrees + "deg)");
+        
+        if (direction == 1) {
+            
+            degrees++;
+            
+        } else {
+            
+            degrees--;
+            
+        }
+        
+        if(degrees > 359 || degrees < -359) {
+            
+            degrees = 0;
+            
+        }
+        looper = 
+            setTimeout("rotate('" + element + "'," + speed + "," + direction + "," + degrees + ")", 
+            speed);
+        
+    }  
+
+$("document").ready(function() {
+    
+    var $container = $("#container");
+    
+    for (var i = 0; i < 15; i++) {
+        
+        $container.append('<img id="img' + i + '" src="images/cog.png" alt="cog">');
+        
+    }
+    
+    var cogSize = $(window).height() / 10;
+    var vert, horiz;
+    var top, left;
+    var seperation = cogSize - (cogSize / 10);
+    
+    $cogs = $("img");
+    $cogs.css("position", "absolute");
+    $cogs.width(cogSize);
+    
+    $cogs.eq(0).css({
+        left : 0,
+        top : 0
+    });
+    
+    for (var i = 0; i < $cogs.length; i++) {
+        
+        top = parseInt($cogs.eq(i-1).css("top"));
+        left = parseInt($cogs.eq(i-1).css("left"));
+        
+        if (i % 3 !== 0) {
+            
+            vert = (seperation / 2)  - (seperation / 10);
+            horiz = Math.sqrt((seperation * seperation) - (vert + vert));
+            
+        } else {
+                                
+            horiz = (seperation / 2) - (seperation / 10);
+            vert = Math.sqrt((seperation * seperation) - (horiz + horiz));                  
+                                
+        }
+        
+        $cogs.eq(i).css("left", horiz + left);
+        $cogs.eq(i).css("top", vert + top);
+        
+        rotate("img" + i, 10, i % 2 == 0 ? 0 : 1, 0);
+        
+    }
+        
+    $cogs.show();
+    
+});
+
+</script>
+  
+</html>
